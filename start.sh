@@ -1,7 +1,7 @@
 #!/bin/sh
-# start.sh - script để chạy lookbusy với cấu hình 16 core + 14-20% CPU mỗi core + 10GB RAM
+# Script chạy lookbusy với 16 core, mỗi core ~14-20%, RAM ~10GB
 
-/app/lookbusy \
-  --cpu-util=14-20,14-20,14-20,14-20,14-20,14-20,14-20,14-20, \
-  14-20,14-20,14-20,14-20,14-20,14-20,14-20,14-20 \
+lookbusy \
+  --cpu-util=14-20,14-20,14-20,14-20,14-20,14-20,14-20,14-20,\
+14-20,14-20,14-20,14-20,14-20,14-20,14-20,14-20 \
   --mem-util=10GB
