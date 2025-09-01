@@ -1,22 +1,14 @@
 #!/bin/sh
-# Script chạy lookbusy: 
-# - CPU: tất cả core, mỗi core random 14–20%
-# - RAM: random 14–20% tổng RAM hệ thống
+# Tự động detect CPU core + RAM
+# Random 14–20% CPU và RAM
 
-# Đếm số core CPU
 CORES=$(nproc)
-
-# Lấy tổng RAM (MiB)
 TOTAL_MEM=$(free -m | awk '/Mem:/ {print $2}')
-
-# Random phần trăm (14–20)
 PERCENT=$((RANDOM % 7 + 14))
-
-# RAM cần dùng (MiB)
 MEM_TO_USE=$((TOTAL_MEM * PERCENT / 100))
-
-# Tạo chuỗi CPU random 14–20 cho tất cả core
 CPU_UTIL=$(yes "14-20" | head -n $CORES | paste -sd, -)
 
-echo "👉 Phát hiện ${CORES} core CPU"
-echo
+echo "👉 ${CORES} cores | RAM ${TOTAL_MEM} MiB | Using ${PERCENT}% (~${MEM_TO_USE} MiB)"
+echo "👉 CPU Util: ${CPU_UTIL}"
+
+lookbusy --cpu-util=${CPU_UTIL} --mem-util=${MEM_TO_USE}M
