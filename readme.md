@@ -1,13 +1,15 @@
 # lookbusy-docker (optimized)
 
-Dockerized version of lookbusy with auto CPU/RAM detection.
+Dockerized version of **lookbusy** that simulates random CPU and RAM load.
 
-## Features
-- Detects number of CPU cores automatically
-- Randomizes CPU utilization between 14–20% per core
-- Randomizes RAM utilization between 14–20% of total system memory
+##  Features
 
-## Run with Docker Compose
+- Auto-detect all CPU cores and use them
+- Randomizes CPU utilization between **14–20% per core**
+- Randomizes RAM utilization between **14–20% of total system memory**
 
+##  Usage
+
+### Build
 ```bash
-docker compose up -d
+docker build -t lookbusy-optimized .
