@@ -1,23 +1,22 @@
-FROM alpine:3.19
+FROM debian:bullseye-slim
 
-WORKDIR /app
+RUN apt-get update && apt-get install -y \
+    wget \
+    tar \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
 
-# Cài các công cụ cần thiết để build lookbusy từ source GitHub mirror của bạn
-RUN apk update && apk add --no-cache build-base git autoconf automake
-
-# Clone source lookbusy từ repo bạn (fork tự host)
-RUN git clone https://github.com/huongpham911/lookbusy.git lookbusy-src \
-    && cd lookbusy-src \
-    && ./autogen.sh || true \
+# tải lookbusy 1.4
+WORKDIR /opt
+RUN wget "https://www.dropbox.com/scl/fi/sj9be9whx3swuz47rmukq/lookbusy-1.4.tar.gz?rlkey=41q6jwgecyqcgp028al3hpz77&st=apua0ng5&dl=1" -O lookbusy-1.4.tar.gz \
+    && tar -zxvf lookbusy-1.4.tar.gz \
+    && cd lookbusy-1.4 \
     && ./configure \
     && make \
     && make install
 
-# Dọn dẹp các package build để giảm kích thước image
-RUN apk del build-base git autoconf automake
+WORKDIR /
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
 
-# Copy script dùng để chạy load
-COPY start.sh /app/start.sh
-RUN chmod +x /app/start.sh
-
-CMD ["/app/start.sh"]
+CMD ["/start.sh"]
