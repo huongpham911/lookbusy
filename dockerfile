@@ -2,21 +2,20 @@ FROM alpine:3.19
 
 WORKDIR /app
 
-# Cài tool build
-RUN apk update && apk add --no-cache build-base git autoconf automake
+# Cài công cụ build
+RUN apk update && apk add --no-cache build-base wget
 
-# Clone source lookbusy từ repo riêng của bạn (thay vì Shawnxm hay SourceForge)
-RUN git clone https://github.com/huongpham911/lookbusy.git lookbusy-src \
-    && cd lookbusy-src \
-    && ./autogen.sh || true \
+# Tải source lookbusy từ SourceForge
+RUN wget https://downloads.sourceforge.net/project/lookbusy/lookbusy/1.4/lookbusy-1.4.tar.gz \
+    && tar -xzf lookbusy-1.4.tar.gz \
+    && cd lookbusy-1.4 \
     && ./configure \
     && make \
     && make install
 
-# Cleanup để nhẹ image
-RUN apk del build-base git autoconf automake
+# Cleanup
+RUN rm -rf /var/cache/apk/* /app/lookbusy-1.4 /app/lookbusy-1.4.tar.gz
 
-# Copy script start.sh
 COPY start.sh /app/start.sh
 RUN chmod +x /app/start.sh
 
