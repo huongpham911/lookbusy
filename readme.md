@@ -17,7 +17,7 @@ This image is configured to:
 docker build -t lookbusy.
 
 ▶️ How to run
-docker run -d --name lookbusy lookbusy-16core
+docker run -d --name lookbusy lookbusy
 
 or with Compose:
 docker compose up -d
