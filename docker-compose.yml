@@ -5,8 +5,3 @@ services:
     build: .
     container_name: lookbusy
     restart: always
-    command: >
-      lookbusy
-      --cpu-util=14-20,14-20,14-20,14-20,14-20,14-20,14-20,14-20,
-      14-20,14-20,14-20,14-20,14-20,14-20,14-20,14-20
-      --mem-util=10GB
