@@ -1,16 +1,23 @@
 #!/bin/sh
-# Tự động detect CPU cores + RAM, chạy lookbusy với 14-20% tải CPU và RAM
+# Auto detect CPU cores + RAM, chạy lookbusy với tải CPU (14–20%) và RAM (14–17%)
 
 CORES=$(nproc)
 TOTAL_MEM=$(free -m | awk '/Mem:/ {print $2}')
-PERCENT=$((RANDOM % 7 + 14))
-MEM_TO_USE=$((TOTAL_MEM * PERCENT / 100))
-CPU_UTIL=$(yes "14-20" | head -n $CORES | paste -sd, -)
+
+# chọn random % RAM trong khoảng 14–17
+RAM_PERCENT=$((RANDOM % 4 + 14))
 
 echo "Detected CPU cores: ${CORES}"
 echo "Total RAM: ${TOTAL_MEM} MiB"
-echo "Using ~${PERCENT}% RAM (~${MEM_TO_USE} MiB)"
-echo "CPU Util Pattern: ${CPU_UTIL}"
+echo "Using ~${RAM_PERCENT}% RAM"
 
-# Chạy lookbusy ngầm nền để giữ CPU + RAM
-lookbusy --cpu-util=${CPU_UTIL} --mem-util=${MEM_TO_USE}M
+# chạy lookbusy: CPU random 14–20% trên tất cả core + RAM giữ % đã chọn
+lookbusy \
+  --ncpus=${CORES} \
+  --cpu-util=RANDOM \
+  --cpu-util-min=14 \
+  --cpu-util-max=20 \
+  --mem-util=${RAM_PERCENT}% &
+  
+# giữ container sống
+tail -f /dev/null
